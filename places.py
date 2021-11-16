@@ -17,30 +17,6 @@ def miles_to_meters(miles):
         return 0
 
 
-# def get_address(latitude, longitude):
-#     geolocator = Nominatim(user_agent="geoapiExercises")
-#     location = geolocator.reverse((latitude, longitude))
-#     address = location.raw["address"]
-#     if "house_number" in address:
-#         house_num = address["house_number"]
-#     else:
-#         house_num = ""
-
-#     return str(
-#         house_num
-#         + " "
-#         + address["road"]
-#         + ", "
-#         + address["city"]
-#         + ", "
-#         + address["state"]
-#         + " "
-#         + address["postcode"]
-#         + ", "
-#         + address["country"]
-#     )
-
-
 def place_detail(place_id):
 
     url = "https://maps.googleapis.com/maps/api/place/details/json?"
@@ -65,10 +41,6 @@ def place_detail(place_id):
         "res_photo": place_photo(x["result"]["photos"][0]["photo_reference"])
         if "photos" in x["result"]
         else "",
-        # "res_address": get_address(
-        #     x["result"]["geometry"]["location"]["lat"],
-        #     x["result"]["geometry"]["location"]["lng"],
-        # ),
         "res_address": x["result"]["formatted_address"],
         "res_phone_number": x["result"]["formatted_phone_number"]
         if "formatted_phone_number" in x["result"]
