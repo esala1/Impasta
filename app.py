@@ -5,7 +5,7 @@ import json
 import random
 import flask
 from flask import Flask, redirect, render_template, request, url_for, jsonify
-
+from places import nearby_restaurants
 from dotenv import load_dotenv, find_dotenv
 from flask_login import (
     login_user,
@@ -59,6 +59,26 @@ def load_user(user_name):
 
 
 bp = flask.Blueprint("bp", __name__, template_folder="./build")
+
+
+@bp.route("/index")
+@login_required
+def index():
+
+    nearby_restaurants_list = nearby_restaurants()
+
+    data = json.dumps(
+        {
+            "username": current_user.username,
+            "page": "homepage",
+            "restaurants": nearby_restaurants_list,
+        }
+    )
+    return render_template(
+        "index.html",
+        data=data,
+    )
+
 
 app.register_blueprint(bp)
 
