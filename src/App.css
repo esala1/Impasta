@@ -29,7 +29,8 @@
 }
 
 .title {
-  font-size: 25px;
+  font-size: 30px;
+  font-weight: 100;
 }
 
 .App-link {
@@ -57,4 +58,32 @@ img {
 
 audio {
   padding-bottom: 30px;
+}
+
+.name {
+  text-align: center;
+  font-weight: 50;
+  font-size: 25px;
+}
+
+.img1 {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.center {
+  text-align:center;
+  font-weight: 30;
+}
+
+.btn btn-outline-dark {
+  text-align: center;
+}
+
+.title1 {
+  text-align: center;
+  font-weight: bold;
+  font-size: 25px;
 }
