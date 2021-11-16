@@ -6,6 +6,7 @@ import random
 import flask
 from flask import Flask, redirect, render_template, request, url_for, jsonify
 from places import nearby_restaurants
+from documenu import get_restaurant_id, get_restaurant_info
 from dotenv import load_dotenv, find_dotenv
 from flask_login import (
     login_user,
@@ -72,6 +73,27 @@ def index():
             "username": current_user.username,
             "page": "homepage",
             "restaurants": nearby_restaurants_list,
+        }
+    )
+    return render_template(
+        "index.html",
+        data=data,
+    )
+
+
+@bp.route("/menu/<restaurant_name>/<restaurant_address>")
+@login_required
+def menu(restaurant_name, restaurant_address):
+    restaurant_id = get_restaurant_id(restaurant_name, restaurant_address)
+    restaurant_data = get_restaurant_info(restaurant_id)
+
+    data = json.dumps(
+        {
+            "username": current_user.username,
+            "page": "menu",
+            "restaurant_name": restaurant_name,
+            "restaurant_address": restaurant_address,
+            "foodItems": restaurant_data,
         }
     )
     return render_template(
