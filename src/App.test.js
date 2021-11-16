@@ -2,38 +2,18 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
 import App from './App';
 
-test('renders buttons', () => {
+test('renders nav bar', () => {
   render(<App />);
-  const addButton = screen.getByText('Add Artist');
-  expect(addButton).toBeInTheDocument();
-  const saveButton = screen.getByText('Save');
-  expect(saveButton).toBeInTheDocument();
-});
+  const appName = screen.getByText('Impasta')
+  expect(appName).toBeInTheDocument();
+  const logoutButton = screen.getByText('Logout');
+  expect(logoutButton).toBeInTheDocument();
+})
 
-test('add artist', () => {
+test('renders the homepage and the menu button', () => {
   render(<App />);
-  const addButton = screen.getByText('Add Artist');
-  const textInput = screen.getByTestId('text_input');
-  fireEvent.change(textInput, { target: { value: 'Pinegrove' } });
-  fireEvent.click(addButton);
-
-  const artistEntry = screen.getByText('Pinegrove');
-  const deleteButton = screen.getByText('Delete');
-  expect(artistEntry).toBeInTheDocument();
-  expect(deleteButton).toBeInTheDocument();
-});
-
-test('delete artist', () => {
-  render(<App />);
-  const addButton = screen.getByText('Add Artist');
-  const textInput = screen.getByTestId('text_input');
-  fireEvent.change(textInput, { target: { value: 'Pinegrove' } });
-  fireEvent.click(addButton);
-
-  const artistEntry = screen.getByText('Pinegrove');
-  const deleteButton = screen.getByText('Delete');
-  expect(artistEntry).toBeInTheDocument();
-
-  fireEvent.click(deleteButton);
-  expect(artistEntry).not.toBeInTheDocument();
+  const restaurantsText = screen.getByText('Restaurants Near You');
+  expect(restaurantsText).toBeInTheDocument();
+  const menuButton = screen.getAllByText('View Menu')[0];
+  expect(menuButton).toBeInTheDocument();
 });

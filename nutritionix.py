@@ -25,20 +25,33 @@ def get_nutrition_values(food):
     error = "Nutrition information for this item is currently not available"
 
     try:
-        response = requests.request("GET", url, headers=headers, params=querystring)
+        response = requests.get(url, headers=headers, params=querystring)
         Jresponse = response.json()
-        print(Jresponse)
     except JSONDecodeError:
         return error
 
     try:
         if "error_message" in Jresponse:
             return error
-        nf_calories = Jresponse["hits"][0]["fields"]["nf_calories"]
-        nf_total_fat = Jresponse["hits"][0]["fields"]["nf_total_fat"]
-        nf_serving_size_qty = Jresponse["hits"][0]["fields"]["nf_serving_size_qty"]
+        nf_calories, nf_total_fat, nf_serving_size_qty = extract_nutrition_values(
+            Jresponse
+        )
+        if nf_calories == None or nf_total_fat == None or nf_serving_size_qty == None:
+            return error
         return f"Calories: {nf_calories}, Total Fat: {nf_total_fat}, Serving Size: {nf_serving_size_qty}"
     except IndexError:
         return error
     except KeyError:
         return error
+
+
+def extract_nutrition_values(Jresponse):
+    try:
+        nf_calories = Jresponse["hits"][0]["fields"]["nf_calories"]
+        nf_total_fat = Jresponse["hits"][0]["fields"]["nf_total_fat"]
+        nf_serving_size_qty = Jresponse["hits"][0]["fields"]["nf_serving_size_qty"]
+        return nf_calories, nf_total_fat, nf_serving_size_qty
+    except KeyError:
+        return None, None, None
+    except IndexError:
+        return None, None, None
