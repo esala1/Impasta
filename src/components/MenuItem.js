@@ -10,7 +10,7 @@ import React from 'react';
 export default function MenuItem(props) {
     return (
         <div className="col-4 alignLeft">
-            <div>Name: {props.data.name}</div>
+            <div className="title1">{props.data.name}</div>
             <div>Price: {props.data.price}</div>
             <div>Description: {props.data.description}</div>
             <div>Nutrition: {props.data.nutrition}</div>

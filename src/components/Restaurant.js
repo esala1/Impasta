@@ -9,13 +9,13 @@ import React from 'react';
 
 export default function Restaurant(props) {
     return (
-        <div className="col-4 alignLeft">
+        <div className="col-4 alignCenter">
             <br />
-            <img src={props.restaurantData.res_photo} width="150" height="200" alt={props.restaurantData.res_name} />
-            <div>Name: {props.restaurantData.res_name}</div>
-            <div>Address: {props.restaurantData.res_address}</div>
-            <div>Rating: {props.restaurantData.res_rating}</div>
-            <div>Total Ratings: {props.restaurantData.res_user_rating}</div>
+            <div className="name">{props.restaurantData.res_name}</div>
+            <img src={props.restaurantData.res_photo} width="150" height="200" alt={props.restaurantData.res_name} className="img1" />
+            <div className="center">{props.restaurantData.res_address}</div>
+            <div className="center">Rating: {props.restaurantData.res_rating}</div>
+            <div className="center">Total Ratings: {props.restaurantData.res_user_rating}</div>
             <a href={'/menu/' + props.restaurantData.res_name + '/' + props.restaurantData.res_address}>
                 <button type="button" className="btn btn-outline-dark">View Menu</button>
             </a>
