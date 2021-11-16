@@ -117,13 +117,16 @@ def signup_post():
     user = Users.query.filter_by(username=username).first()
     if user:
         return render_template("signup.html", user_exists=True)
-    else:
-        password_hash = generate_password_hash(password, method="sha256")
-        user = Users(username=username, password=password_hash)
-        db.session.add(user)
-        db.session.commit()
+    add_user(username, password)
 
     return redirect(url_for("login"))
+
+
+def add_user(username, password):
+    password_hash = generate_password_hash(password, method="sha256")
+    user = Users(username=username, password=password_hash)
+    db.session.add(user)
+    db.session.commit()
 
 
 @app.route("/login")

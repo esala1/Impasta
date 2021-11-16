@@ -68,22 +68,33 @@ def get_restaurant_info(restaurant_id):
         for items in menu_options:
             print(items)
             print("-" * 50)
-            menu_items = items["menu_items"][0]
-            food_name = menu_items["name"]
-            price = menu_items["pricing"][0]["priceString"]
-            description = menu_items["description"]
+            food_name, price, description = extract_menu_items(items)
             if description == "":
                 description = description_error
-            nutrition_values = get_nutrition_values(food_name)
-            menu.append(
-                {
-                    "name": food_name,
-                    "price": price,
-                    "description": description,
-                    "nutrition": nutrition_values,
-                }
-            )
+
+            if food_name == None or price == None:
+                menu.append(
+                    {
+                        "error": "Key or Index Error",
+                    }
+                )
+            else:
+                nutrition_values = get_nutrition_values(food_name)
+                menu.append(
+                    {
+                        "name": food_name,
+                        "price": price,
+                        "description": description,
+                        "nutrition": nutrition_values,
+                    }
+                )
     except IndexError:
+        menu.append(
+            {
+                "error": "Index Error",
+            }
+        )
+    except KeyError:
         menu.append(
             {
                 "error": "Index Error",
@@ -91,3 +102,17 @@ def get_restaurant_info(restaurant_id):
         )
 
     return menu
+
+
+def extract_menu_items(items_json):
+    try:
+        menu_items = items_json["menu_items"][0]
+        food_name = menu_items["name"]
+        price = menu_items["pricing"][0]["priceString"]
+        description = menu_items["description"]
+
+        return food_name, price, description
+    except KeyError:
+        return None, None, None
+    except IndexError:
+        return None, None, None
