@@ -4,9 +4,6 @@ import React from 'react';
 export default function Restaurant({
   restaurantData,
 }) {
-  console.log(restaurantData.res_name);
-  console.log(restaurantData.res_photo);
-  console.log(restaurantData.res_address);
   return (
     <div className="col-4 alignCenter">
       <br />
