@@ -72,6 +72,8 @@ def index():
     response = urlopen(url)
     data = json.load(response)
 
+    print(data["ip"])
+
     nearby_restaurants_list = nearby_restaurants(data["ip"])
 
     data = json.dumps(
