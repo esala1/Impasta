@@ -8,6 +8,7 @@ from flask import Flask, redirect, render_template, request, url_for, jsonify
 from places import nearby_restaurants
 from documenu import get_restaurant_id, get_restaurant_info
 from dotenv import load_dotenv, find_dotenv
+from urllib.request import urlopen
 from flask_login import (
     login_user,
     current_user,
@@ -66,7 +67,12 @@ bp = flask.Blueprint("bp", __name__, template_folder="./build")
 @login_required
 def index():
 
-    nearby_restaurants_list = nearby_restaurants()
+    url = "http://ipinfo.io/json"
+
+    response = urlopen(url)
+    data = json.load(response)
+
+    nearby_restaurants_list = nearby_restaurants(data["ip"])
 
     data = json.dumps(
         {

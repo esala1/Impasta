@@ -1,11 +1,13 @@
 from types import resolve_bases
 import requests, json
+from urllib.request import urlopen
 import geocoder
 from geopy.geocoders import Nominatim
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
 
 API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 
@@ -61,11 +63,14 @@ def place_photo(photo_reference):
     return response
 
 
-def nearby_restaurants():
+def nearby_restaurants(ip_address):
+    # print("ip address", ip_address)
 
-    g = geocoder.ip("me")
+    g = geocoder.ipinfo(ip_address)
     myloc = str(g.lat) + "%2C" + str(g.lng)
 
+    # print("me ip address", g.ip)
+    # print("myloc", myloc)
     res_list = []
 
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
@@ -83,7 +88,10 @@ def nearby_restaurants():
 
     x = response.json()
 
-    next_page_token = x["next_page_token"]
+    if "next_page_token" in x:
+        next_page_token = x["next_page_token"]
+    else:
+        next_page_token = ""
 
     for i in range(len(x["results"])):
         res_list.append(place_detail(x["results"][i]["place_id"]))
@@ -111,5 +119,4 @@ def nearby_restaurants():
             next_page_token = x["next_page_token"]
         else:
             next_page_token = ""
-
     return res_list
