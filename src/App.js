@@ -56,11 +56,7 @@ function App() {
           <div className="row">
             {restaurants.map((restaurantData) => (
               <Restaurant
-                res_name={restaurantData.res_name}
-                res_photo={restaurantData.res_photo}
-                res_address={restaurantData.res_address}
-                res_rating={restaurantData.res_rating}
-                res_user_rating={restaurantData.res_user_rating}
+                restaurantData={restaurantData}
               />
             ))}
           </div>
