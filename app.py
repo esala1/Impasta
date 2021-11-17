@@ -1,12 +1,14 @@
 # pylint: disable=no-member
 # pylint: disable=too-few-public-methods
+"""
+This is the main file that runs to display the website to user. It uses Flask and its functions
+to provide website functionality to the user. It consists of multiple routes that a user will
+visit during their time on the website.
+"""
 import os
 import json
-import random
 import flask
-from flask import Flask, redirect, render_template, request, url_for, jsonify
-from places import nearby_restaurants
-from documenu import get_restaurant_id, get_restaurant_info
+from flask import Flask, redirect, render_template, request, url_for
 from dotenv import load_dotenv, find_dotenv
 from urllib.request import urlopen
 from flask_login import (
@@ -19,6 +21,8 @@ from flask_login import (
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
+from places import nearby_restaurants
+from documenu import get_restaurant_id, get_restaurant_info
 
 
 load_dotenv(find_dotenv())
@@ -38,6 +42,11 @@ db = SQLAlchemy(app)
 
 
 class Users(UserMixin, db.Model):
+    """
+    Database Table called Users that stores information about the users using the website.
+    It includes id, username, and password columns where id is unique and is set as primary key
+    """
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120))
     password = db.Column(db.String(120))
@@ -46,10 +55,12 @@ class Users(UserMixin, db.Model):
         return f"<User {self.username}>"
 
     def get_username(self):
+        """This function returns the username"""
         return self.username
 
 
-db.create_all()
+if os.getenv("DATABASE_URL") is not None:
+    db.create_all()
 login_manager = LoginManager()
 login_manager.login_view = "login"
 login_manager.init_app(app)
@@ -57,6 +68,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_name):
+    """placeholder"""
     return Users.query.get(user_name)
 
 
@@ -66,6 +78,11 @@ bp = flask.Blueprint("bp", __name__, template_folder="./build")
 @bp.route("/index")
 @login_required
 def index():
+    """
+    This function serves as homepage that a user is redirected to after logging in. The page
+    displays restaurants near the user so he or she can view more information about each
+    restaurant including address, rating, menu, etc.
+    """
 
     url = "http://ipinfo.io/json"
 
@@ -96,6 +113,11 @@ def index():
 @bp.route("/menu/<restaurant_name>/<restaurant_address>")
 @login_required
 def menu(restaurant_name, restaurant_address):
+    """
+    This function calls the Documenu API through get_restaurant_id and get_restaurant_info
+    functions. Then, sends the data to React frontend so that the menu items are displayed
+    to the user.
+    """
     restaurant_id = get_restaurant_id(restaurant_name, restaurant_address)
     restaurant_data = get_restaurant_info(restaurant_id)
 
@@ -119,11 +141,21 @@ app.register_blueprint(bp)
 
 @app.route("/signup")
 def signup():
+    """
+    This function displays the signup page to the user so that he or she can create an account
+    and use the website.
+    """
     return render_template("signup.html")
 
 
 @app.route("/signup", methods=["POST"])
 def signup_post():
+    """
+    This function allows the user to create an account using the input username and password fields.
+    If an account is successfully created, the user is redirected to login. If not, a message
+    indicating that a username already exists is shown to user, and he or she needs to use a
+    different one.
+    """
     username = request.form.get("username")
     password = request.form.get("password")
     user = Users.query.filter_by(username=username).first()
@@ -135,6 +167,7 @@ def signup_post():
 
 
 def add_user(username, password):
+    """A helper function that adds a user to the database given their username and password."""
     password_hash = generate_password_hash(password, method="sha256")
     user = Users(username=username, password=password_hash)
     db.session.add(user)
@@ -143,6 +176,13 @@ def add_user(username, password):
 
 @app.route("/login")
 def login():
+    """
+    This is an alternative endpoint to '/'. It achieves the same purpose - checks
+    if the user is logged in or not. If logged in, he or she is directed to bp.index page.
+    If not, he or she is directed to login page.
+    """
+    print(request.headers.getlist("X-Forwarded-For"))
+    print(request.remote_addr)
     if current_user.is_authenticated:
         return redirect(url_for("bp.index"))
     return render_template("login.html")
@@ -150,6 +190,12 @@ def login():
 
 @app.route("/login", methods=["POST"])
 def login_post():
+    """
+    The function gets the user inputs of username and password. Checks if the user exists in
+    the database or not. If the user exists, then he or she is directed to the homepage (bp.index).
+    If not, then he or she is redirected to the login page with an error that says invalid username
+    or password.
+    """
     username = request.form.get("username")
     password = request.form.get("password")
     user = Users.query.filter_by(username=username).first()
@@ -161,6 +207,10 @@ def login_post():
 
 @app.route("/")
 def main():
+    """
+    This function directs a user to the login page if they are not logged in
+    and the homepage (i.e., bp.index) if they are already logged in.
+    """
     if current_user.is_authenticated:
         return redirect(url_for("bp.index"))
     return redirect(url_for("login"))
@@ -169,6 +219,11 @@ def main():
 @app.route("/logout")
 @login_required
 def logout():
+    """
+    The function uses logout_user from flask login to logout the user. After a user is logged out,
+    he or she is redirected to the login page which serves as the default page for users
+    who are not logged in.
+    """
     logout_user()
     return redirect(url_for("login"))
 

@@ -3,9 +3,6 @@ import React from 'react';
 import Restaurant from './components/Restaurant';
 import MenuItem from './components/MenuItem';
 import 'bootstrap/dist/css/bootstrap.min.css';
-/* eslint-disable max-len */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/jsx-one-expression-per-line */
 
 function App() {
   const args = (document.getElementById('data') == null) ? ({
@@ -57,7 +54,15 @@ function App() {
         <div className="title">Restaurants Near You</div>
         <div className="container">
           <div className="row">
-            {restaurants.map((restaurantData) => <Restaurant restaurantData={restaurantData} />)}
+            {restaurants.map((restaurantData) => (
+              <Restaurant
+                res_name={restaurantData.res_name}
+                res_photo={restaurantData.res_photo}
+                res_address={restaurantData.res_address}
+                res_rating={restaurantData.res_rating}
+                res_user_rating={restaurantData.res_user_rating}
+              />
+            ))}
           </div>
           <br />
         </div>
@@ -73,10 +78,17 @@ function App() {
           <button type="button" className="btn btn-outline-dark">Logout</button>
         </a>
       </nav>
-      <div className="title">{restaurantName} Menu</div>
+      <div className="title">{`${restaurantName} Menu`}</div>
       <div className="container">
         <div className="row">
-          {foodItems.map((item) => <MenuItem data={item} />)}
+          {foodItems.map((item) => (
+            <MenuItem
+              name={item.name}
+              price={item.price}
+              description={item.description}
+              nutrition={item.nutrition}
+            />
+          ))}
         </div>
       </div>
     </div>
