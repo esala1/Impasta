@@ -44,8 +44,15 @@ def get_nutrition_values(food):
         )
         if nf_calories is None or nf_total_fat is None or nf_serving_size_qty is None:
             return error
-        return f"Calories: {nf_calories}, Total Fat: {nf_total_fat}, \
-        Serving Size: {nf_serving_size_qty}"
+        # result = f"Calories: {nf_calories}, Total Fat: {nf_total_fat}, Serving Size: {nf_serving_size_qty}"
+        return (
+            "Calories: "
+            + str(nf_calories)
+            + ", Total Fat: "
+            + str(nf_total_fat)
+            + ", Serving Size: "
+            + str(nf_serving_size_qty)
+        )
     except IndexError:
         return error
     except KeyError:
