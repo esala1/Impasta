@@ -47,4 +47,4 @@ jobs:
         run: python ./test/test_mocked_server.py
       
       - name: Unmocked Run Tests
-        run: python ./test/test_unmocked_server
+        run: python ./test/test_unmocked_server.py
