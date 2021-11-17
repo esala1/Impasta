@@ -72,9 +72,13 @@ def index():
     response = urlopen(url)
     data = json.load(response)
 
-    print(data["ip"])
+    if not request.headers.getlist("X-Forwarded-For"):
+        ip = request.remote_addr
+    else:
+        ip = request.headers.getlist("X-Forwarded-For")[0]
 
-    nearby_restaurants_list = nearby_restaurants(data["ip"])
+    print("ip address", ip)
+    nearby_restaurants_list = nearby_restaurants(ip)
 
     data = json.dumps(
         {
