@@ -44,4 +44,5 @@ jobs:
       - name: Run tests
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: python -m unittest
+        run: python ./test/test_mocked_server.py
+        run: python ./test/test_unmocked_server

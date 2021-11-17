@@ -10,7 +10,6 @@ import json
 import flask
 from flask import Flask, redirect, render_template, request, url_for
 from dotenv import load_dotenv, find_dotenv
-from urllib.request import urlopen
 from flask_login import (
     login_user,
     current_user,
@@ -84,18 +83,13 @@ def index():
     restaurant including address, rating, menu, etc.
     """
 
-    url = "http://ipinfo.io/json"
-
-    response = urlopen(url)
-    data = json.load(response)
-
     if not request.headers.getlist("X-Forwarded-For"):
-        ip = request.remote_addr
+        ip_value = request.remote_addr
     else:
-        ip = request.headers.getlist("X-Forwarded-For")[0]
+        ip_value = request.headers.getlist("X-Forwarded-For")[0]
 
-    print("ip address", ip)
-    nearby_restaurants_list = nearby_restaurants(ip)
+    print("ip address", ip_value)
+    nearby_restaurants_list = nearby_restaurants(ip_value)
 
     data = json.dumps(
         {
