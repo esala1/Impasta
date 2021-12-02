@@ -4,6 +4,7 @@ It detects users' distance when they access this website
 based on their IP addresses.
 """
 import os
+from geocoder.api import ip
 import requests
 import geocoder
 from dotenv import load_dotenv
@@ -93,7 +94,7 @@ def nearby_restaurants(ip_address):
     And that is parsed and the method ultimately returns a list with the nearest
     restaurants near the users
     """
-    geo = geocoder.ip("me")
+    geo = geocoder.ipinfo(ip_address)
     myloc = str(geo.lat) + "%2C" + str(geo.lng)
 
     res_list = []
