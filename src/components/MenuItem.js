@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/* eslint-disable react/prop-types */
+
 export default function MenuItem({
-  name, price, description, nutrition,
+  name, price, description, nutrition, onClick,
 }) {
   return (
     <div className="col-4 alignLeft">
@@ -10,6 +12,7 @@ export default function MenuItem({
       <div>{`Price: ${price}`}</div>
       <div>{`Description: ${description}`}</div>
       <div>{`Nutrition: ${nutrition}`}</div>
+      <button type="button" onClick={onClick}>Add to Fav</button>
       <br />
     </div>
   );

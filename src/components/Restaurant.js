@@ -1,5 +1,8 @@
 import React from 'react';
 /* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
+/* eslint-disable prefer-template */
+/* eslint-disable quotes */
 
 export default function Restaurant({
   restaurantData,

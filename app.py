@@ -58,6 +58,20 @@ class Users(UserMixin, db.Model):
         return self.username
 
 
+class Foods(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(120))
+    foodname = db.Column(db.String(120))
+    price = db.Column(db.String(120))
+
+    def __repr__(self):
+        return f"<Username: {self.username}, Restaurant Name: {self.foodname}>"
+
+    def get_username(self):
+        """This function returns the username"""
+        return self.username, self.foodname
+
+
 if os.getenv("DATABASE_URL") is not None:
     db.create_all()
 login_manager = LoginManager()
@@ -90,7 +104,6 @@ def index():
 
     print("ip address", ip_value)
     nearby_restaurants_list = nearby_restaurants(ip_value)
-
     data = json.dumps(
         {
             "username": current_user.username,
@@ -132,6 +145,59 @@ def menu(restaurant_name, restaurant_address):
 
 app.register_blueprint(bp)
 
+@app.route("/landing")
+def landing():
+    return render_template("landing.html")
+
+@app.route("/favorite-foods")
+@login_required
+def favorite_foods():
+    error = False
+    username = current_user.username
+    food_data = Foods.query.filter_by(username=username).all()
+    food_names = []
+    food_prices = []
+    for food in food_data:
+        food_names.append(food.foodname)
+        food_prices.append(food.price)
+
+    username = username[0].upper() + username[1:]
+    if len(food_data) == 0:
+        return render_template(
+            "favorites.html", no_saved_artists=True, username=username
+        )
+
+    return render_template(
+        "favorites.html",
+        food_data=zip(food_names, food_prices),
+        username=username,
+        error=error,
+    )
+
+@app.route("/save", methods=['POST'])
+@login_required
+def save():
+    favorite_restaurants = flask.request.json.get("favoriteFoods")
+    username = current_user.username
+    for food in favorite_restaurants:
+        db.session.add(Foods(foodname=food['name'], price=food['price'], username=username))
+    db.session.commit()
+    return {"status": "success"}
+
+@app.route("/delete-action", methods=["GET", "POST"])
+@login_required
+def delete_artist():
+    if request.method == "POST":
+        username = current_user.username
+        food_name = request.form.get("food_name")
+
+        db.session.query(Foods).filter_by(
+            username =username,
+            foodname = food_name
+        ).delete()
+
+        db.session.commit()
+    return redirect("/favorite-foods")
 
 @app.route("/signup")
 def signup():
