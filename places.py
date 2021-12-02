@@ -93,7 +93,7 @@ def nearby_restaurants(ip_address):
     And that is parsed and the method ultimately returns a list with the nearest
     restaurants near the users
     """
-    geo = geocoder.ipinfo(ip_address)
+    geo = geocoder.ip("me")
     myloc = str(geo.lat) + "%2C" + str(geo.lng)
 
     res_list = []
@@ -118,7 +118,7 @@ def nearby_restaurants(ip_address):
     else:
         next_page_token = ""
 
-    for i in range(len(response_json["results"])):
+    for i in range(len(response_json["results"]) // 5):
         res_list.append(place_detail(response_json["results"][i]["place_id"]))
 
     while next_page_token:
@@ -137,7 +137,7 @@ def nearby_restaurants(ip_address):
 
         response_json = response.json()
 
-        for i in range(len(response_json["results"])):
+        for i in range(len(response_json["results"]) // 5):
             res_list.append(place_detail(response_json["results"][i]["place_id"]))
 
         if "next_page_token" in response_json:
