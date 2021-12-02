@@ -1,0 +1,124 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</head>
+
+<style>
+    body {
+    background-color: lightblue;
+    }
+
+    #title {
+        font-size:40; 
+        margin-top: 5%; 
+        text-align: center;
+    }
+
+    .text {
+        font-family: Gill Sans, sans-serif;
+    }
+
+    .spacing {
+        margin-bottom: 5%;
+    }
+
+    .navbar {
+        background-color: black;
+        overflow: hidden;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 1%;
+        float: right;
+    }
+
+    .navbar-element {
+        margin-top: 0.5%;
+    }
+
+    .box {
+        text-align: center; 
+        background-color: white; 
+        padding: 2%; 
+        margin-top: 10%;
+        height: 450px;
+        width: 350px;
+    }
+
+    .error {
+        color: red;
+        margin-bottom: 2%;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td, th {
+        text-align: left;
+        padding: 1%;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-gap: 10px;
+        justify-content: space-around;
+    }
+</style>
+<body>
+    <div>
+        <nav class="navbar navbar-light bg-light">
+            <div class="navbar-brand">Impasta</div>
+            <a href="/favorite-foods" style="margin-left: 72%">
+                <button type="button" class="btn btn-outline-dark">Favorite Foods</button>
+            </a>
+            <a href="/logout">
+            <button type="button" class="btn btn-outline-dark">Logout</button>
+            </a>
+        </nav>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div style="margin-left: 1%; margin-bottom: 2%; font-size: 20;">{{username}} Favorite Foods</div>
+            {% if no_saved_artists %}
+            <div style="margin-left: 1%;">You currently don't have any foods saved. Please use the add button on your
+                menu page to save favorite foods.</div>
+            {% else %}
+            <table>
+                <tr>
+                    <th>Food</th>
+                    <th>Price</th>
+                </tr>
+                {% for food_name, food_price in food_data %}
+                <tr>
+                    <td>{{food_name}}</td>
+                    <td>{{food_price}}</td>
+                    <td>
+                        <form action="/delete-action" method="POST">
+                            <input type="hidden" name="food_name" value="{{food_name}}" />
+                            <input type="submit" value="Delete"
+                                style="padding: 10; cursor: pointer; background-color: rgba(255, 0, 0, 0.788); color:white; border:0;" />
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+    </div>
+    </body>
+</html>
