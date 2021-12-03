@@ -1,9 +1,10 @@
 import './App.css';
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Restaurant from './components/Restaurant';
-import MenuItem from './components/MenuItem';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-multiple-empty-lines */
 /* eslint-disable no-multi-spaces */
@@ -18,7 +19,22 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 /* eslint-disable indent */
 /* eslint-disable object-shorthand */
 /* eslint-disable react/jsx-indent */
+/* eslint-disable no-multi-assign */
+/* eslint-disable block-spacing */
+/* eslint-disable no-lone-blocks */
+/* eslint-disable no-return-assign */
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable no-extra-semi */
+/* eslint-disable space-before-blocks */
+/* eslint-disable no-const-assign */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable keyword-spacing */
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-plusplus */
+/* eslint-disable no-loop-func */
+/* eslint-disable space-infix-ops */
 /* eslint-disable semi */
+
 
 function App() {
   const args = (document.getElementById('data') == null) ? ({
@@ -52,6 +68,7 @@ function App() {
   let foodItems = [];
   let restaurants = [];
   const [favoriteFoods, setfavoriteFoods]  = useState([]);
+  const [favoriteButtons, setFavoriteButtons] = useState([]);
 
   if ('foodItems' in args) {
     foodItems = args.foodItems;
@@ -77,14 +94,54 @@ function App() {
   }
 
   function onClickAdd(i) {
+    const updatedFavoriteButtons = [...favoriteButtons, i];
+    setFavoriteButtons(updatedFavoriteButtons);    
     const updatedFoods = [...favoriteFoods, foodItems[i]];
     setfavoriteFoods(updatedFoods);
   }
 
   function onClickDelete(i) {
+    const index = favoriteButtons.indexOf(i);
+    if (index > -1) {
+      const updatedFavoriteButtons = [...favoriteButtons.slice(0, index), ...favoriteButtons.slice(index+1)];
+      setFavoriteButtons(updatedFavoriteButtons);
+    }
     const updatedFoods = [...favoriteFoods.slice(0, i), ...favoriteFoods.slice(i + 1)];
     setfavoriteFoods(updatedFoods);
   }
+
+  function MenuItem({
+    name, price, description, nutrition, i,
+  }) {
+    return (
+      <div className="col-4 alignLeft">
+        <div className="title1">{name}</div>
+        <div>{`Price: ${price}`}</div>
+        <div>{`Description: ${description}`}</div>
+        <div>{`Nutrition: ${nutrition}`}</div>
+        {favoriteButtons.includes(i) ? (
+          <button type="button" className="btn btn-danger" onClick={() => onClickDelete(i)}>Delete from Favorites</button>
+        ): (
+          <button type="button" className="btn btn-primary" onClick={() => onClickAdd(i)}>Add to Favorites</button>
+        )}
+        <br />
+      </div>
+    );
+  }
+  
+  MenuItem.defaultProps = {
+    name: 'Gyan',
+    price: '$20',
+    description: 'this is the description',
+    nutrition: 'Calories: 100, Total Fat: 10, Serving Size: 5',
+  };
+  
+  MenuItem.propTypes = {
+    name: PropTypes.string,
+    price: PropTypes.string,
+    description: PropTypes.string,
+    nutrition: PropTypes.string,
+  };
 
   if (args.page === 'homepage') {
     const restaurantList = restaurants.map((restaurantData, idx) => (
@@ -92,7 +149,7 @@ function App() {
         restaurantData={restaurantData}
       />
     ));
-
+    
     return (
       <div>
         <nav className="navbar navbar-light bg-light">
@@ -127,16 +184,17 @@ function App() {
         </a>
       </nav>
       <div className="title">{`${restaurantName} Menu`}</div>
-      <button type="button" onClick={onClickSave}>Save All</button>
+      <button type="button" className="btn btn-success" onClick={onClickSave}>Save All</button>
       <div className="container">
         <div className="row">
-          {foodItems.map((item, idx) => (
+          {foodItems.map((item, idx) => 
+          (
             <MenuItem
               name={item.name}
               price={item.price}
               description={item.description}
               nutrition={item.nutrition}
-              onClick={() => onClickAdd(idx)}
+              i={idx}
             />
           ))}
         </div>

@@ -177,10 +177,14 @@ def favorite_foods():
 @app.route("/save", methods=['POST'])
 @login_required
 def save():
-    favorite_restaurants = flask.request.json.get("favoriteFoods")
+    favorite_foods = flask.request.json.get("favoriteFoods")
     username = current_user.username
-    for food in favorite_restaurants:
-        db.session.add(Foods(foodname=food['name'], price=food['price'], username=username))
+    existing_foods = [food.foodname for food in Foods.query.filter_by(username=username).all()]
+
+    for food in favorite_foods:
+        if food['name'] not in existing_foods:
+            db.session.add(Foods(foodname=food['name'], price=food['price'], username=username))
+
     db.session.commit()
     return {"status": "success"}
 
