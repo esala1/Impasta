@@ -4,38 +4,6 @@ import PropTypes from 'prop-types';
 import Restaurant from './components/Restaurant';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-multiple-empty-lines */
-/* eslint-disable no-multi-spaces */
-/* eslint-disable max-len */
-/* eslint-disable no-trailing-spaces */
-/* eslint-disable prefer-template */
-/* eslint-disable quotes */
-/* eslint-disable react/jsx-indent-props */
-/* eslint-disable object-curly-spacing */
-/* eslint-disable quote-props */
-/* eslint-disable prefer-const */
-/* eslint-disable indent */
-/* eslint-disable object-shorthand */
-/* eslint-disable react/jsx-indent */
-/* eslint-disable no-multi-assign */
-/* eslint-disable block-spacing */
-/* eslint-disable no-lone-blocks */
-/* eslint-disable no-return-assign */
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable no-extra-semi */
-/* eslint-disable space-before-blocks */
-/* eslint-disable no-const-assign */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable keyword-spacing */
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-loop-func */
-/* eslint-disable space-infix-ops */
-/* eslint-disable semi */
-
-
 function App() {
   const args = (document.getElementById('data') == null) ? ({
     artist_ids: [],
@@ -69,7 +37,7 @@ function App() {
   const [searchRestaurants, setSearchRestaurants] = useState([]);
   let foodItems = [];
   let restaurants = [];
-  const [favoriteFoods, setfavoriteFoods]  = useState([]);
+  const [favoriteFoods, setfavoriteFoods] = useState([]);
   const [favoriteButtons, setFavoriteButtons] = useState([]);
 
   if ('foodItems' in args) {
@@ -83,7 +51,6 @@ function App() {
 
   function onButtonSearch(e) {
     e.preventDefault();
-    console.log(JSON.stringify({ search_input: searchInput }));
     fetch('/search', {
       method: 'POST',
       headers: {
@@ -92,13 +59,12 @@ function App() {
       body: JSON.stringify({ search_input: searchInput }),
     }).then((response) => response.json())
       .then((data) => {
-        console.log(data)
         setSearchRestaurants(data.search_restaurant_list);
       });
   }
 
   function onClickSave() {
-    let requestData = { favoriteFoods: favoriteFoods };
+    const requestData = { favoriteFoods };
     fetch('/save', {
       method: 'POST',
       mode: 'cors',
@@ -108,14 +74,14 @@ function App() {
       body: JSON.stringify(requestData),
     })
       .then((response) => response.json())
-      .then((data) => {
-        window.location.replace("/favorite-foods");
+      .then(() => {
+        window.location.replace('/favorite-foods');
       });
   }
 
   function onClickAdd(i) {
     const updatedFavoriteButtons = [...favoriteButtons, i];
-    setFavoriteButtons(updatedFavoriteButtons);    
+    setFavoriteButtons(updatedFavoriteButtons);
     const updatedFoods = [...favoriteFoods, foodItems[i]];
     setfavoriteFoods(updatedFoods);
   }
@@ -123,7 +89,9 @@ function App() {
   function onClickDelete(i) {
     const index = favoriteButtons.indexOf(i);
     if (index > -1) {
-      const updatedFavoriteButtons = [...favoriteButtons.slice(0, index), ...favoriteButtons.slice(index+1)];
+      const updatedFavoriteButtons = [
+        ...favoriteButtons.slice(0, index), ...favoriteButtons.slice(index + 1),
+      ];
       setFavoriteButtons(updatedFavoriteButtons);
     }
     const updatedFoods = [...favoriteFoods.slice(0, i), ...favoriteFoods.slice(i + 1)];
@@ -141,21 +109,21 @@ function App() {
         <div>{`Nutrition: ${nutrition}`}</div>
         {favoriteButtons.includes(i) ? (
           <button type="button" className="btn btn-danger" onClick={() => onClickDelete(i)}>Delete from Favorites</button>
-        ): (
+        ) : (
           <button type="button" className="btn btn-primary" onClick={() => onClickAdd(i)}>Add to Favorites</button>
         )}
         <br />
       </div>
     );
   }
-  
+
   MenuItem.defaultProps = {
     name: 'Gyan',
     price: '$20',
     description: 'this is the description',
     nutrition: 'Calories: 100, Total Fat: 10, Serving Size: 5',
   };
-  
+
   MenuItem.propTypes = {
     name: PropTypes.string,
     price: PropTypes.string,
@@ -164,12 +132,16 @@ function App() {
   };
 
   if (args.page === 'homepage') {
-    const restaurantList = restaurants.map((restaurantData, idx) => (
+    const restaurantList = restaurants.map((restaurantData) => (
       <Restaurant
-        restaurantData={restaurantData}
+        resName={restaurantData.res_name}
+        resPhoto={restaurantData.res_photo}
+        resAddress={restaurantData.res_address}
+        resRating={restaurantData.res_rating}
+        resUserRating={restaurantData.res_user_rating}
       />
     ));
-    
+
     return (
       <div>
         <nav className="navbar navbar-light bg-light">
@@ -211,8 +183,7 @@ function App() {
       <button type="button" className="btn btn-success" onClick={onClickSave}>Save All</button>
       <div className="container">
         <div className="row">
-          {foodItems.map((item, idx) => 
-          (
+          {foodItems.map((item, idx) => (
             <MenuItem
               name={item.name}
               price={item.price}
