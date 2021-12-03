@@ -9,9 +9,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-# let's use "food" variable to store what users search and return results
-
-
 def get_nutrition_values(food):
     """
     This function accepts food as its input and uses it to make a get request to
@@ -44,7 +41,6 @@ def get_nutrition_values(food):
         )
         if nf_calories is None or nf_total_fat is None or nf_serving_size_qty is None:
             return error
-        # result = f"Calories: {nf_calories}, Total Fat: {nf_total_fat}, Serving Size: {nf_serving_size_qty}"
         return (
             "Calories: "
             + str(nf_calories)

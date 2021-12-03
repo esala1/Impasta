@@ -60,6 +60,12 @@ class Users(UserMixin, db.Model):
 
 
 class Foods(db.Model):
+    """
+    Database table called Foods that stores information about the foods that a user saves.
+    It includes id, username, foodname and price columns where id is unique and is set as
+    primary key
+    """
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120))
     foodname = db.Column(db.String(120))
@@ -69,7 +75,7 @@ class Foods(db.Model):
         return f"<Username: {self.username}, Restaurant Name: {self.foodname}>"
 
     def get_username(self):
-        """This function returns the username"""
+        """This function returns the username and foodname"""
         return self.username, self.foodname
 
 
@@ -120,9 +126,14 @@ def index():
 
 @bp.route("/search", methods=["POST"])
 def search():
-    searchInput = flask.request.json.get("search_input")
-    print("search input", searchInput)
-    search_restaurant_list = searchRestaurant(searchInput)
+    """
+    This function calls the Google Maps API to search for user specified input
+    through searchRestaurant function. Then, sends data to react frontend to display
+    the results to the user.
+    """
+    search_input = flask.request.json.get("search_input")
+    print("search input", search_input)
+    search_restaurant_list = searchRestaurant(search_input)
     return flask.jsonify({"search_restaurant_list": search_restaurant_list})
 
 
@@ -155,14 +166,13 @@ def menu(restaurant_name, restaurant_address):
 app.register_blueprint(bp)
 
 
-@app.route("/landing")
-def landing():
-    return render_template("landing.html")
-
-
 @app.route("/favorite-foods")
 @login_required
 def favorite_foods():
+    """
+    This function reads all the food items stored by a user in the database and sends
+    the data to React frontend so that they can be displayed.
+    """
     error = False
     username = current_user.username
     food_data = Foods.query.filter_by(username=username).all()
@@ -189,13 +199,23 @@ def favorite_foods():
 @app.route("/save", methods=["POST"])
 @login_required
 def save():
-    favorite_foods = flask.request.json.get("favoriteFoods")
+    """
+    This function saves a user's favorite food items sent from the react frontend into database.
+    """
+    favorite_food_items = flask.request.json.get("favoriteFoods")
     username = current_user.username
-    existing_foods = [food.foodname for food in Foods.query.filter_by(username=username).all()]
+    existing_food_items = [
+        food.foodname for food in Foods.query.filter_by(username=username).all()
+    ]
 
-    for food in favorite_foods:
-        if food['name'] not in existing_foods:
-            db.session.add(Foods(foodname=food['name'], price=food['price'], username=username))
+    new_food_items = []
+    for food in favorite_food_items:
+        if food["name"] not in existing_food_items:
+            if food["name"] not in new_food_items:
+                new_food_items.append(food["name"])
+                db.session.add(
+                    Foods(foodname=food["name"], price=food["price"], username=username)
+                )
 
     db.session.commit()
     return {"status": "success"}
@@ -204,6 +224,9 @@ def save():
 @app.route("/delete-action", methods=["GET", "POST"])
 @login_required
 def delete_artist():
+    """
+    This function deletes a user chosen artist from the database.
+    """
     if request.method == "POST":
         username = current_user.username
         food_name = request.form.get("food_name")
