@@ -26,9 +26,4 @@ def searchRestaurant(search_input):
     for i in range(len(x["results"]) // 5 + 1):
         res_list.append(place_detail(x["results"][i]["place_id"]))
 
-    print(res_list)
-
     return res_list
-
-
-searchRestaurant("9292")
