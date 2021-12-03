@@ -49,19 +49,39 @@ function App() {
       },
     ],
   }) : JSON.parse(document.getElementById('data').text);
+  const [searchInput, setSearchInput] = useState();
+  const [searchRestaurants, setSearchRestaurants] = useState([]);
   let foodItems = [];
   let restaurants = [];
-  const [favoriteFoods, setfavoriteFoods]  = useState([]);
+  const [favoriteFoods, setfavoriteFoods] = useState([]);
 
   if ('foodItems' in args) {
     foodItems = args.foodItems;
   }
-  if ('restaurants' in args) {
+  if (searchRestaurants.length !== 0) {
+    restaurants = searchRestaurants;
+  } else if ('restaurants' in args) {
     restaurants = args.restaurants;
   }
 
+  function onButtonSearch(e) {
+    e.preventDefault();
+    console.log(JSON.stringify({ search_input: searchInput }));
+    fetch('/search', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ search_input: searchInput }),
+    }).then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        setSearchRestaurants(data.search_restaurant_list);
+      });
+  }
+
   function onClickSave() {
-    let requestData = {favoriteFoods: favoriteFoods};
+    let requestData = { favoriteFoods: favoriteFoods };
     fetch('/save', {
       method: 'POST',
       mode: 'cors',
@@ -70,10 +90,10 @@ function App() {
       },
       body: JSON.stringify(requestData),
     })
-    .then((response) => response.json())
-    .then((data) => {
-      window.location.replace("/favorite-foods");
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        window.location.replace("/favorite-foods");
+      });
   }
 
   function onClickAdd(i) {
@@ -97,6 +117,10 @@ function App() {
       <div>
         <nav className="navbar navbar-light bg-light">
           <div style={{ marginLeft: '2%' }} className="navbar-brand">Impasta</div>
+          <form onSubmit={onButtonSearch}>
+            <input type="text" onChange={(e) => setSearchInput(e.target.value)} value={searchInput} />
+            <button type="submit">Search</button>
+          </form>
           <a href="/favorite-foods" style={{ marginLeft: '72%' }}>
             <button type="button" className="btn btn-outline-dark">Favorite Foods</button>
           </a>
@@ -120,7 +144,7 @@ function App() {
       <nav className="navbar navbar-light bg-light">
         <div style={{ marginLeft: '2%' }} className="navbar-brand">Impasta</div>
         <a href="/favorite-foods" style={{ marginLeft: '72%' }}>
-            <button type="button" className="btn btn-outline-dark">Favorite Foods</button>
+          <button type="button" className="btn btn-outline-dark">Favorite Foods</button>
         </a>
         <a href="/logout" style={{ marginRight: '2%' }}>
           <button type="button" className="btn btn-outline-dark">Logout</button>
