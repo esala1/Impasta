@@ -22,6 +22,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from places import nearby_restaurants
 from documenu import get_restaurant_id, get_restaurant_info
+from search import searchRestaurant
 
 
 load_dotenv(find_dotenv())
@@ -117,6 +118,14 @@ def index():
     )
 
 
+@bp.route("/search", methods=["POST"])
+def search():
+    searchInput = flask.request.json.get("search_input")
+    print("search input", searchInput)
+    search_restaurant_list = searchRestaurant(searchInput)
+    return flask.jsonify({"search_restaurant_list": search_restaurant_list})
+
+
 @bp.route("/menu/<restaurant_name>/<restaurant_address>")
 @login_required
 def menu(restaurant_name, restaurant_address):
@@ -145,9 +154,11 @@ def menu(restaurant_name, restaurant_address):
 
 app.register_blueprint(bp)
 
+
 @app.route("/landing")
 def landing():
     return render_template("landing.html")
+
 
 @app.route("/favorite-foods")
 @login_required
@@ -174,7 +185,8 @@ def favorite_foods():
         error=error,
     )
 
-@app.route("/save", methods=['POST'])
+
+@app.route("/save", methods=["POST"])
 @login_required
 def save():
     favorite_foods = flask.request.json.get("favoriteFoods")
@@ -188,6 +200,7 @@ def save():
     db.session.commit()
     return {"status": "success"}
 
+
 @app.route("/delete-action", methods=["GET", "POST"])
 @login_required
 def delete_artist():
@@ -196,12 +209,12 @@ def delete_artist():
         food_name = request.form.get("food_name")
 
         db.session.query(Foods).filter_by(
-            username =username,
-            foodname = food_name
+            username=username, foodname=food_name
         ).delete()
 
         db.session.commit()
     return redirect("/favorite-foods")
+
 
 @app.route("/signup")
 def signup():
