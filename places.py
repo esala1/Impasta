@@ -4,6 +4,7 @@ It detects users' distance when they access this website
 based on their IP addresses.
 """
 import os
+from geocoder.api import ip
 import requests
 import geocoder
 from dotenv import load_dotenv
@@ -118,7 +119,7 @@ def nearby_restaurants(ip_address):
     else:
         next_page_token = ""
 
-    for i in range(len(response_json["results"])):
+    for i in range(len(response_json["results"]) // 5):
         res_list.append(place_detail(response_json["results"][i]["place_id"]))
 
     while next_page_token:
@@ -137,7 +138,7 @@ def nearby_restaurants(ip_address):
 
         response_json = response.json()
 
-        for i in range(len(response_json["results"])):
+        for i in range(len(response_json["results"]) // 5):
             res_list.append(place_detail(response_json["results"][i]["place_id"]))
 
         if "next_page_token" in response_json:
