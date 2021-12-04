@@ -153,6 +153,9 @@ function App() {
           <a href="/favorite-foods" style={{ marginLeft: '72%' }}>
             <button type="button" className="btn btn-outline-dark">Favorite Foods</button>
           </a>
+          <a href="/guide" target="_blank">
+            <button type="button" className="btn btn-outline-dark"> Guide</button>
+          </a>
           <a href="/logout">
             <button type="button" className="btn btn-outline-dark">Logout</button>
           </a>

@@ -220,6 +220,10 @@ def save():
     db.session.commit()
     return {"status": "success"}
 
+@app.route("/guide")
+@login_required
+def guide():
+    return render_template("guide.html")
 
 @app.route("/delete-action", methods=["GET", "POST"])
 @login_required
