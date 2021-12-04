@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        section {
+            height: 540px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            }
+        h1 {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 77px;
+            }
+
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align: center;"> </h1>
+    <hr style="height: 20px; background: red;">
+    <section>
+        <div class="container">
+          <h1 style="text-align: center;"> Begin Workout!</h1>
+          <h2 style="text-align: center;">Do it NOW!! <span style="color: red;">Refresh page to restart</span></h3>
+        </div>
+      </section>
+      
+      <script>
+        let SecondsT = 600;
+        let timeH = document.querySelector("h1");
+
+        Time(SecondsT);
+
+        let counter = setInterval(() => {
+        SecondsT--;
+        Time(SecondsT);
+        
+        if (SecondsT == 0 || SecondsT < 1) {
+            stop();
+            clearInterval(counter);
+            alert("Refresh page to start another 10 minutes exercise!");
+        }
+        }, 1000);
+
+        function Time(second) {
+            const m = Math.floor(second / 60);
+            const s= Math.floor(second % 60);
+            timeH.innerHTML = `
+            ${m < 10 ? "0" : ""}${m}:${s < 10 ? "0" : ""}${s}
+            `;
+            }
+
+        function stop() {
+            timeH.innerHTML = "Time out";
+        }
+
+      </script>
+
+</body>
+</html>
