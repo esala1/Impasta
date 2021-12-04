@@ -144,28 +144,43 @@ function App() {
 
     return (
       <div>
-        <nav className="navbar navbar-light bg-light">
-          <div style={{ marginLeft: '2%' }} className="navbar-brand">Impasta</div>
-          <form onSubmit={onButtonSearch}>
-            <input type="text" onChange={(e) => setSearchInput(e.target.value)} value={searchInput} />
-            <button type="submit">Search</button>
-          </form>
-          <a href="/favorite-foods" style={{ marginLeft: '72%' }}>
-            <button type="button" className="btn btn-outline-dark">Favorite Foods</button>
-          </a>
-          <a href="/guide" target="_blank">
-            <button type="button" className="btn btn-outline-dark"> Guide</button>
-          </a>
-          <a href="/logout">
-            <button type="button" className="btn btn-outline-dark">Logout</button>
-          </a>
-        </nav>
-        <div className="title">Restaurants Near You</div>
-        <div className="container">
-          <div className="row">
-            {restaurantList}
+        <header>
+          <div className="navbar-brand"><a href="/index" className="navbar-brand-1">Impasta</a></div>
+          <nav>
+            <ul>
+              <li>
+                <form onSubmit={onButtonSearch}>
+                  <input className="searhBar" type="text" onChange={(e) => setSearchInput(e.target.value)} value={searchInput} />
+                  <button className="searchButton" type="submit">Search</button>
+                </form>
+              </li>
+              <li>
+                <a href="/favorite-foods">
+                  <button type="button" className="btn btn-outline-dark">Favorite Foods</button>
+                </a>
+              </li>
+              <li>
+                <a href="/guide" target="_blank">
+                  <button type="button" className="btn btn-outline-dark"> Guide</button>
+                </a>
+              </li>
+              <li>
+                <a href="/logout">
+                  <button type="button" className="btn btn-outline-dark">Logout</button>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </header>
+
+        <div className="main">
+          <div className="title">Restaurants Near You</div>
+          <div className="container">
+            <div className="row">
+              {restaurantList}
+            </div>
+            <br />
           </div>
-          <br />
         </div>
       </div>
     );
@@ -173,28 +188,44 @@ function App() {
   const restaurantName = args.restaurant_name;
   return (
     <div>
-      <nav className="navbar navbar-light bg-light">
-        <div style={{ marginLeft: '2%' }} className="navbar-brand">Impasta</div>
-        <a href="/favorite-foods" style={{ marginLeft: '72%' }}>
-          <button type="button" className="btn btn-outline-dark">Favorite Foods</button>
-        </a>
-        <a href="/logout" style={{ marginRight: '2%' }}>
-          <button type="button" className="btn btn-outline-dark">Logout</button>
-        </a>
-      </nav>
-      <div className="title">{`${restaurantName} Menu`}</div>
-      <button type="button" className="btn btn-success" onClick={onClickSave}>Save All</button>
-      <div className="container">
-        <div className="row">
-          {foodItems.map((item, idx) => (
-            <MenuItem
-              name={item.name}
-              price={item.price}
-              description={item.description}
-              nutrition={item.nutrition}
-              i={idx}
-            />
-          ))}
+      <header>
+        <div className="navbar-brand"><a href="/index" className="navbar-brand-1">Impasta</a></div>
+        <nav>
+          <ul>
+            <li>
+              <a href="/favorite-foods">
+                <button type="button" className="btn btn-outline-dark">Favorite Foods</button>
+              </a>
+            </li>
+            <li>
+              <a href="/guide" target="_blank">
+                <button type="button" className="btn btn-outline-dark"> Guide</button>
+              </a>
+            </li>
+            <li>
+              <a href="/logout">
+                <button type="button" className="btn btn-outline-dark">Logout</button>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </header>
+
+      <div className="main">
+        <div className="title">{`${restaurantName} Menu`}</div>
+        <button type="button" className="btn btn-success" onClick={onClickSave}>Save All</button>
+        <div className="container">
+          <div className="row">
+            {foodItems.map((item, idx) => (
+              <MenuItem
+                name={item.name}
+                price={item.price}
+                description={item.description}
+                nutrition={item.nutrition}
+                i={idx}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
