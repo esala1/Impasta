@@ -1,0 +1,126 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Guide</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            * {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            }
+            p {
+                text-align: center;
+            }
+            .container {
+                margin: 0 auto;
+            }
+            h6 {
+                text-align: right;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                left: 50%;
+                top: 160%;
+                right: 10%;
+                position: absolute;
+                line-height: 2.5;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 style="text-align: center; margin-top: 10%;">Guideline: Daily Calories Intake</h1>
+        <p style="font-size: 20px;">
+            Humans, on average, need about 2,000 calories daily to stay in their weight. However, other factors, like age, sex, and physical activity contribute as well.
+            The following chart provides a recommended daily calories consumption based on the categories defined.    
+        </p>
+
+        <div class="container">
+            <canvas id = "myChart"></canvas>
+        </div>
+
+            <script> 
+                const ctx = document.getElementById('myChart');
+                const myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Sedentary children: 2–8 years', 'Active children: 2–8 years', 'Females: 9–13 years',
+                                'Males: 9–13 years', 'Active females: 14–30 years','Sedentary females: 14–30 years',
+                                'Active males: 14–30 years', 'Sedentary males: 14–30 years', 
+                                'Active people: 30 years and over', 'Sedentary people: 30 years and over'],
+                        datasets: [{
+                            label: 'Recommended Daily Calories Limit',
+                            data: [1400, 2000, 2200, 2600, 2400, 2000,
+                                    3200, 2600, 3000, 2400 ],
+                            backgroundColor: [
+                                'lightblue',
+                                'lightred',
+                                'lightgreen',
+                                'lightyellow',
+                                'purple',
+                                'pink',
+                                'red',
+                                'yellow',
+                                'orange'
+                            ],
+                            borderColor: [
+                                'rgba(210, 8, 3, 2)',
+                                'rgba(77, 32, 64, 2)',
+                                'rgba(255, 87, 3, 3)',
+                                'rgba(1, 2, 19, 2)',
+                                'rgba(3, 10, 25, 3)',
+                                'rgba(5, 15, 4, 44)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+    </script>
+    <p>Source: <a href = "https://www.healthline.com/health/balanced-diet#calories"> https://www.healthline.com/health/balanced-diet#calories</a></p>
+        
+    <h2 style="text-align: center;"> Your diet should include the following ratios: </h2>
+    <div style="width:550px; height:500px">
+    <canvas id="bar-chart" width="40" height="50">
+    </div>
+    </canvas>
+    <div class="d-flex justify-content-center">
+    <script>
+                // pie chart to display nutritional ratio
+        new Chart(document.getElementById("bar-chart"), {
+            type: 'pie',
+            data: {
+            labels: ["Carbohydrates", "Protein", "Fat"],
+            datasets: [
+                {
+                label: "Diet Ratio Percentage",
+                backgroundColor: ["yellow", "red","green"],
+                data: [65,35,35]
+                }
+            ]
+            },
+            options: {
+            legend: { display: false },
+            title: {
+                display: true,
+                text: 'Diet Ratio'
+            }
+            }
+        });
+    </script>
+    <h6>
+        Carbohydrates<br>
+        Carbohydrates, or carbs, are sugar molecules. Along with proteins and fats, carbohydrates are one of three main nutrients found in foods and drinks.<br> Your body breaks down carbohydrates into glucose. Glucose, or blood sugar, is the main source of energy for your body's cells, tissues, and organs.<br><br>
+        Protein<br>
+        One of the three nutrients used as energy sources (calories) by the body. Proteins are essential components of the muscle, skin, and bones.<br><br>
+        Fat<br>
+        Fats are nutrients that give you energy.<br> Fats have 9 calories in each gram.<br> Fats help in the absorption of fat-soluble vitamins A, D, E, and K.<br> Fats are either saturated or unsaturated, and most foods with fat have both types. But usually there is more of one kind of fat than the other.<br><br>
+    </h6>    
+</div>
+<br> <br> <br>
+<p>Source: <a href = "https://www.prospectmedical.com/resources/wellness-center/macronutrients-fats-carbs-protein">https://www.prospectmedical.com/resources/wellness-center/macronutrients-fats-carbs-protein </a></p>
+    </body>
