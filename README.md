@@ -1,6 +1,7 @@
 # Impasta
+(Sprint 1) Heroku Link: https://sleepy-castle-35232.herokuapp.com/
 
-Heroku Link: http://protected-cove-95578.herokuapp.com
+(Sprint 2) Heroku Link: http://protected-cove-95578.herokuapp.com
 
 # Project Overview
 
@@ -15,7 +16,6 @@ We are building building and deploy a web app that allows users to find menu con
     - JavaScript
 - Backend/Frontend Integration:
     - JavaScript Fetch API
-    - React Router
 - APIs:
     - Google Maps API
     - OpenMenu API
