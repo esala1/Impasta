@@ -4,7 +4,6 @@ It detects users' distance when they access this website
 based on their IP addresses.
 """
 import os
-from geocoder.api import ip
 import requests
 import geocoder
 from dotenv import load_dotenv

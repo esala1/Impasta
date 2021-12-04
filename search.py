@@ -1,11 +1,22 @@
-import requests, json
+"""
+This file is a back-end for Google Text Search API
+It will return restaurants information based on user's
+input such as location or/and restaurants names
+"""
 import os
-from places import place_detail, place_photo, miles_to_meters
+import requests
+from places import place_detail, miles_to_meters
 
 API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 
 
-def searchRestaurant(search_input):
+def search_restaurant(search_input):
+    """
+    this function takes user's search input as a parameter and pass that value into
+    Text Search API end-point to return the ids of restaurants and then pass that id
+    into function place_detail which is called from places.py to return restaurants
+    data
+    """
 
     url = "https://maps.googleapis.com/maps/api/place/textsearch/json?"
     res_list = []
@@ -21,9 +32,9 @@ def searchRestaurant(search_input):
         + API_KEY
     )
 
-    x = response.json()
+    json_response = response.json()
 
-    for i in range(len(x["results"]) // 5 + 1):
-        res_list.append(place_detail(x["results"][i]["place_id"]))
+    for i in range(len(json_response["results"]) // 5 + 1):
+        res_list.append(place_detail(json_response["results"][i]["place_id"]))
 
     return res_list
