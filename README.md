@@ -1,6 +1,7 @@
 # Impasta
+(Sprint 1) Heroku Link: https://sleepy-castle-35232.herokuapp.com/
 
-Heroku Link: https://sleepy-castle-35232.herokuapp.com/
+(Sprint 2) Heroku Link: http://protected-cove-95578.herokuapp.com
 
 # Project Overview
 
@@ -15,7 +16,6 @@ We are building building and deploy a web app that allows users to find menu con
     - JavaScript
 - Backend/Frontend Integration:
     - JavaScript Fetch API
-    - React Router
 - APIs:
     - Google Maps API
     - OpenMenu API
@@ -43,8 +43,10 @@ We are building building and deploy a web app that allows users to find menu con
 ### Run Application
 
 1. Run command in terminal (in your project directory): `npm run build`. This will update anything related to your `App.js` file (so `public/index.html`, any CSS you're pulling in, etc).
-2. Run command in terminal (in your project directory): `python3 app.py`
-3. Preview web page in browser 'localhost:8080/' (or whichever port you're using)
+2. On line 96 in places.py, change geocoder.ipinfo(ip_address) to geocoder.ip("me").
+3. Run command in terminal (in your project directory): `python3 app.py`
+4. Preview web page in browser 'localhost:8080/' (or whichever port you're using)
+
 
 ### Deploy to Heroku
 
