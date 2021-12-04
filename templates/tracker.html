@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tracker</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
         * {
             margin: 0;
@@ -63,8 +64,18 @@
         function stop() {
             timeH.innerHTML = "Time out";
         }
-
       </script>
+
+        <h2 style="text-align: center;">Plan your exercises</h2>
+        <div class="d-flex justify-content-center">
+                
+            <form name="controls" id="controls">
+                <br/>
+                <textarea style="width: 399px; height: 182px" id="output" name="output" rows="9" wrap="virtual" cols=48></textarea><br>
+                <p ><input type="reset" value="clear"></p>
+            </form>
+        
+        </div>
 
 </body>
 </html>
