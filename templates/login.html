@@ -6,23 +6,146 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }    
+    section {
+        position: relative;
+        min-height: 100vh;
+        background-image: url('https://mysweprojectbucket.s3.amazonaws.com/impastaBackground.png');
+        background-repeat: no-repeat;
+    }
+
+    .container {
+        margin: 0 5%;
+    }
+
+    .welcometext {
+        padding-top: 5%;
+        color: darkblue;
+    }
+
+    h3 {
+        font-size: 6.5rem;
+        line-height: 1;
+    }
+
+    p {
+        font-size: 1.7rem;
+        font-weight: 300;
+        margin-top: 10px;
+        line-height: 1.5;
+    }
+
+    h4 {
+        margin-top: 20px;
+        font-size: 2.0rem;
+        margin-bottom: 40px;
+        line-height: 2;
+    }
+    .center-box {
+        margin: auto; 
+        padding: 3%; 
+        padding-right: 5.5%;
+        padding-left: 5.5%;
+        background-color: lightblue;
+        box-shadow: 0 0 25px lightblue;
+    }
+
+    .login {
+        position: absolute;
+        right: 10%;
+        bottom: 15%;
+        height: 75%;
+    }
+
+    .center-box-1 {
+        margin: auto; 
+        margin-top: 50px;
+        background-image: url("https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/penne-pasta-background-kyna-studio.jpg");
+        padding: 8% 17.3%; 
+        background-color: lightblue;
+        box-shadow: 0 0 20px lightblue;
+        align-items: center;
+    }
+
+    .border-cornors {
+        border-radius: 30px;
+    }
+</style>
+
 <body>
-    <h1 style="margin-left: 1%;">Log In</h1>
-    {% if invalid_credentials %}
-    <div style="margin-left: 1%; color: red">Invalid Username or Password</div>
-    {% endif %}
-    <form method="POST" action="/login" class="col-sm-3">
-        <div class='form-group'>
-            <input type="text" name="username" class="form-control" placeholder="Your Username">
+    <section>
+    <div class="container">
+        <div class="welcometext">
+            <h3>Welcome to Impasta.</h3>
         </div>
-        <div class="form-group">
-            <input type="password" name="password" class="form-control" placeholder="Your Password">
+        <div class="introtext">
+        <div style-"display: flex;">
+            <h4>Make more informed decisions about your diet by using 
+                Impasta to view nutritional facts <br> about their menu items.
+            </p>
+            <p>
+                <strong>Impasta is Functional:</strong> 
+            </p>
+            <p>
+                - Users can easily and check the nutritional facts
+                      of the restaurants they’re interested in dining 
+                      with.
+            </p>
+            <p>
+                <strong>It Matters Because:</strong>
+            </p>
+            <p>
+                - Many consumers do not know what foods 
+                      they’re actually putting in their body on a daily
+                      basis; hopefully <br>this website helps them make 
+                      informed decisons to better their health!
+            </p>
+            <p>
+                <strong>It was Made By: </strong>
+            </p>
+            <p>
+                - <strong>Gyandeep Reddy Vulupala<br></strong>
+                - <strong>Sanjana Bhat<br></strong>
+                - <strong>Eliyas Sala<br></strong>
+                - <strong>Quang Luu<br></strong>
+            </p>
         </div>
-        <input type="submit" class="btn btn-primary" value="Login">
-        <div style="margin-top: 4%;">
-            Don't have an account <a href={{ url_for('signup') }}>Sign Up</a>
         </div>
-    </form>
+        <div class="login">
+        <div style="display: absolute;">
+            <div class="center-box-1 text-center">
+            </div>
+        </div>
+        <div style="display: flex;">
+            <form method="POST" action="/login" class="center-box text-center">
+                <h1>Login</h1>
+                <br>
+                {% if invalid_credentials %}
+                <div style="margin-left: 1%; color: red">Invalid Username or Password</div>
+                {% endif %}
+                <div class='form-group'>
+                    <input type="text" name="username" class="form-control" placeholder="Your Username">
+                </div>
+                <div class="form-group" style="width: 300px;">
+                    <input type="password" name="password" class="form-control" placeholder="Your Password">
+                </div>
+                <input type="submit" class="btn btn-primary" value="Login" style="border-radius: 100px; padding: 4% 20%;">
+                <div style="margin-top: 15%;">
+                <div style="margin-bottom: 15%">
+                    Don't have an account? <a href={{ url_for('signup') }}>Sign Up</a>
+                </div>
+            </div>
+            </form>
+        </div>
+        </div>
+    </div>
+    </section>
 </body>
 
 </html>

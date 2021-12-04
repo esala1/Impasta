@@ -1,16 +1,19 @@
-import json
+"""
+This file includes functions that connect to Nutritionix API and retrieve nutrition information
+"""
+import os
 from json.decoder import JSONDecodeError
 import requests
-import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
 
-# let's use "food" variable to store what users search and return results
-
-
 def get_nutrition_values(food):
+    """
+    This function accepts food as its input and uses it to make a get request to
+    nutritionix api and retrieve nutrition information.
+    """
     url = f"https://nutritionix-api.p.rapidapi.com/v1_1/search/%20{food}"
 
     querystring = {"fields": "item_name,item_id,brand_name,nf_calories,nf_total_fat"}
@@ -25,20 +28,44 @@ def get_nutrition_values(food):
     error = "Nutrition information for this item is currently not available"
 
     try:
-        response = requests.request("GET", url, headers=headers, params=querystring)
-        Jresponse = response.json()
-        print(Jresponse)
+        response = requests.get(url, headers=headers, params=querystring)
+        j_response = response.json()
     except JSONDecodeError:
         return error
 
     try:
-        if "error_message" in Jresponse:
+        if "error_message" in j_response:
             return error
-        nf_calories = Jresponse["hits"][0]["fields"]["nf_calories"]
-        nf_total_fat = Jresponse["hits"][0]["fields"]["nf_total_fat"]
-        nf_serving_size_qty = Jresponse["hits"][0]["fields"]["nf_serving_size_qty"]
-        return f"Calories: {nf_calories}, Total Fat: {nf_total_fat}, Serving Size: {nf_serving_size_qty}"
+        nf_calories, nf_total_fat, nf_serving_size_qty = extract_nutrition_values(
+            j_response
+        )
+        if nf_calories is None or nf_total_fat is None or nf_serving_size_qty is None:
+            return error
+        return (
+            "Calories: "
+            + str(nf_calories)
+            + ", Total Fat: "
+            + str(nf_total_fat)
+            + ", Serving Size: "
+            + str(nf_serving_size_qty)
+        )
     except IndexError:
         return error
     except KeyError:
         return error
+
+
+def extract_nutrition_values(j_response):
+    """
+    This function accepts the json response from the get request as input and parses
+    the json to retrieve desired values (i.e, nf_calories, nf_total_fat, nf_serving_size_qty).
+    """
+    try:
+        nf_calories = j_response["hits"][0]["fields"]["nf_calories"]
+        nf_total_fat = j_response["hits"][0]["fields"]["nf_total_fat"]
+        nf_serving_size_qty = j_response["hits"][0]["fields"]["nf_serving_size_qty"]
+        return nf_calories, nf_total_fat, nf_serving_size_qty
+    except KeyError:
+        return None, None, None
+    except IndexError:
+        return None, None, None

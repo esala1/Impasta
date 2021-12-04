@@ -6,23 +6,58 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
+<style>
+    body {
+        background-image: url('https://mysweprojectbucket.s3.amazonaws.com/impastaBackground.png');
+    }
+
+    .center-box {
+        margin: auto; 
+        padding: 1%; 
+        padding-right: 10%;
+        padding-left: 10%;
+        background-color: lightblue;
+        box-shadow: 0 0 25px lightblue;
+    }
+
+    .center-box-1 {
+        margin: auto; 
+        margin-top: 50px;
+        background-image: url("https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/penne-pasta-background-kyna-studio.jpg");
+        padding: 8% 17.3%; 
+        background-color: lightblue;
+        box-shadow: 0 0 20px lightblue;
+    }
+
+    .border-cornors {
+        border-radius: 25px;
+    }
+</style>
+
 <body>
-    <h1 style="margin-left: 1%;">Sign Up</h1>
-    {% if user_exists %}
-    <div style="margin-left: 1%; color: red">Username is already taken, please choose a new one</div>
-    {% endif %}
-    <form method="POST" action="/signup" class="col-sm-3">
-        <div class='form-group'>
-            <input type="text" name="username" class="form-control" placeholder="Your Username">
+    <div style="display: flex;">
+        <div class="center-box-1 text-center">
         </div>
-        <div class="form-group">
-            <input type="password" name="password" class="form-control" placeholder="Your Password">
-        </div>
-        <input type="submit" class="btn btn-primary" value="Sign Up">
-        <div style="margin-top: 4%;">
-            Already have an account <a href={{ url_for('login') }}>Login</a>
-        </div>
-    </form>
+    </div>
+    <div style="display: flex;">
+        <form method="POST" action="/login" class="center-box text-center">
+            <h1>Sign Up</h1>
+            <br>
+            {% if user_exists %}
+            <div style="margin-left: 1%; color: red">Username is already taken, please choose a new one</div>
+            {% endif %}
+            <div class='form-group'>
+                <input type="text" name="username" class="form-control" placeholder="Your Username">
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="Your Password">
+            </div>
+            <input type="submit" class="btn btn-primary" value="Sign Up" style="border-radius: 50px; padding: 4% 20%;">
+            <div style="margin-top: 15%;">
+                Already have an account? <a href={{ url_for('login') }}>Login</a>
+            </div>
+        </form>
+    </div>
 </body>
 
 </html>
