@@ -224,7 +224,27 @@ def save():
 @app.route("/guide")
 @login_required
 def guide():
+    """
+    This function renders the guide template to the user.
+    """
     return render_template("guide.html")
+
+
+@app.route("/visualize")
+@login_required
+def visualize():
+    """
+    This function renders the data visualize template to the user.
+    """
+    return render_template("data_visualize.html")
+
+
+@app.route("/tracker")
+def tracker():
+    """
+    This function renders the tracker template to the user.
+    """
+    return render_template("tracker.html")
 
 
 @app.route("/delete-action", methods=["GET", "POST"])
