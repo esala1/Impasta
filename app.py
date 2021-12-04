@@ -22,7 +22,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from places import nearby_restaurants
 from documenu import get_restaurant_id, get_restaurant_info
-from search import searchRestaurant
+from search import search_restaurant
 
 
 load_dotenv(find_dotenv())
@@ -133,7 +133,7 @@ def search():
     """
     search_input = flask.request.json.get("search_input")
     print("search input", search_input)
-    search_restaurant_list = searchRestaurant(search_input)
+    search_restaurant_list = search_restaurant(search_input)
     return flask.jsonify({"search_restaurant_list": search_restaurant_list})
 
 
@@ -220,10 +220,12 @@ def save():
     db.session.commit()
     return {"status": "success"}
 
+
 @app.route("/guide")
 @login_required
 def guide():
     return render_template("guide.html")
+
 
 @app.route("/delete-action", methods=["GET", "POST"])
 @login_required
